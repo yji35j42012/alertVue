@@ -53,22 +53,101 @@
 
 		.alert {
 			display: none;
-			align-items: center;
-			justify-content: center;
 			position: absolute;
 			top: 50px;
 			width: 100%;
 			height: 100%;
 			background: rgba(0, 0, 0, .5);
 		}
-		.alert.on{
-			display: flex;
-		}
 	</style>
 </head>
 
 <body>
-	tttttt
+	<div id="root">
+		<header>
+			<ul>
+				<li>
+					<router-link to="/">home</router-link>
+				</li>
+				<li>
+					<router-link to="/about">about</router-link>
+				</li>
+				<li>
+					<router-link to="/alert1">打開彈窗1</router-link>
+				</li>
+				<li @click="alert2">
+					打開彈窗２
+					<!-- <router-link to="/list3"></router-link> -->
+				</li>
+			</ul>
+		</header>
+		<div class="content">
+			<router-view></router-view>
+		</div>
+
+
+
+		<router-view class="alert" name="alert"></router-view>
+	</div>
+
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+	<script src="https://unpkg.com/http-vue-loader"></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js'></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+	<script>
+		// 1. 定义 (路由) 组件。
+		// 可以从其他文件 import 进来
+		// const List1 = { template: '<div>list1</div>' }
+		// const List2 = { template: '<div>list2</div>' }
+		// const List3 = () => import('../lllll/mmm.vue')
+		// import('../lllll/index.html');
+
+		// 2. 定义路由
+		// 每个路由应该映射一个组件。 其中"component" 可以是
+		// 通过 Vue.extend() 创建的组件构造器，
+		// 或者，只是一个组件配置对象。
+		// 我们晚点再讨论嵌套路由。
+		const routes = [
+			{ path: '/', component: httpVueLoader('./component/home/') },
+			{ path: '/about', component: httpVueLoader('./component/about/') },
+			{ path: '/alert1', component: httpVueLoader('./component/alert1/') },
+		]
+
+		// 3. 创建 router 实例，然后传 `routes` 配置
+		// 你还可以传别的配置参数, 不过先这么简单着吧。
+		const router = new VueRouter({
+			routes // (缩写) 相当于 routes: routes
+		})
+		// 4. 创建和挂载根实例。
+		// 记得要通过 router 配置参数注入路由，
+		// 从而让整个应用都有路由功能
+		// const app = new Vue({
+		// 	router
+		// }).$mount('#root')
+
+		// 现在，应用已经启动了！
+
+		// router.push({path: '/foo'});
+
+		let data = {}
+		let vm = new Vue({
+			el: "#root",
+			data: data,
+			router,
+			methods: {
+				alert1() {
+					console.log('aaa');
+				},
+				alert2() {
+					console.log('bbb');
+
+				},
+			}
+		})
+	</script>
+
 </body>
 
 </html>
